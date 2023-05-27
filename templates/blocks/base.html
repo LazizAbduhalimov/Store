@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html dir="ltr" lang="en-US">
+<head>
+    {% include "blocks/head.html" %}
+    {% block extra_css %}{% endblock %}
+    <!-- Document Title
+============================================= -->
+    <title>{% block title %}{% endblock %}</title>
+</head>
+
+<body class="stretched modal-subscribe-bottom">
+
+<!-- Document Wrapper
+============================================= -->
+<div id="wrapper" class="clearfix">
+
+    <!-- Modal -->
+    {% block modal %}{% endblock %}
+
+    <!-- Header
+    ============================================= -->
+    {% include "blocks/header.html" %}
+    <!-- #header end -->
+
+    <!-- Content
+    ============================================= -->
+    {% block content %}{% endblock %}
+
+    <!-- Footer
+    ============================================= -->
+    {% include "blocks/footer.html" %}
+    <!-- #footer end -->
+
+</div><!-- #wrapper end -->
+
+<!-- Go To Top
+============================================= -->
+<div id="gotoTop" class="icon-angle-up"></div>
+
+<!-- JavaScripts
+============================================= -->
+{% include "blocks/js.html" %}
+{% block extra_js %}{% endblock %}
+
+</body>
+</html>

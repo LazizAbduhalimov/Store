@@ -1,0 +1,252 @@
+{% extends "blocks/base.html" %}
+{% load shop_tags %}
+{% load static %}
+
+{% block title %}
+    Men - Store | Canvas
+{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/components/ion.rangeslider.css' %}" type="text/css"/>
+{% endblock %}
+
+{% block modal %}
+    {% include "blocks/modal.html" %}
+{% endblock %}
+
+{% block content %}
+    <!-- Page Title
+            ============================================= -->
+    <section id="page-title" class="page-title-parallax page-title-dark page-title-center"
+             style="background-image: url('{% static 'demos/store/images/men/page-title.jpg' %}'); background-size: cover; padding: 170px 0 100px;"
+             data-bottom-top="background-position: 50% 200px;" data-top-bottom="background-position: 50% -200px;">
+
+        <div class="container clearfix">
+            <h1>Men Collections</h1>
+            <span>A Fresh Collections Of Men</span>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Men</li>
+            </ol>
+        </div>
+
+    </section><!-- #page-title end -->
+
+    <!-- Content
+    ============================================= -->
+    <section id="content">
+        <div class="content-wrap pb-0">
+
+            <!-- Login/Register Modal -->
+            <div class="modal-register mfp-hide" id="modal-register">
+                <div class="card mx-auto" style="max-width: 540px;">
+                    <div class="card-header py-3 bg-transparent center">
+                        <h3 class="mb-0 font-weight-normal">Hello, Welcome Back</h3>
+                    </div>
+                    <div class="card-body mx-auto py-5" style="max-width: 70%;">
+
+                        <a href="#"
+                           class="button button-large btn-block si-colored si-facebook nott font-weight-normal ls0 center m-0"><i
+                                class="icon-facebook-sign"></i> Log in with Facebook</a>
+
+                        <div class="divider divider-center"><span class="position-relative" style="top: -2px">OR</span>
+                        </div>
+
+                        <form id="login-form" name="login-form" class="mb-0 row" action="#" method="post">
+
+                            <div class="col-12">
+                                <input type="text" id="login-form-username" name="login-form-username" value=""
+                                       class="form-control not-dark" placeholder="Username"/>
+                            </div>
+
+                            <div class="col-12 mt-4">
+                                <input type="password" id="login-form-password" name="login-form-password" value=""
+                                       class="form-control not-dark" placeholder="Password"/>
+                            </div>
+
+                            <div class="col-12 text-right">
+                                <a href="#" class="text-dark font-weight-light mt-2">Forgot Password?</a>
+                            </div>
+
+                            <div class="col-12 mt-4">
+                                <button class="button btn-block m-0" id="login-form-submit" name="login-form-submit"
+                                        value="login">Login
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="card-footer py-4 center">
+                        <p class="mb-0">Don't have an account? <a href="#"><u>Sign up</u></a></p>
+                    </div>
+                </div>
+            </div><!-- Login/Register Modal End -->
+
+            <div class="container-fluid topmargin">
+                <div class="row">
+                    <div class="col-md-2 sticky-sidebar-wrap">
+                        <ul class="list-unstyled items-nav sticky-sidebar shop-filter" data-container="#shop">
+                            <li><a href="#" class="text-dark font-weight-semibold" data-filter="*">All Collections</a>
+                            </li>
+                            <li class="no-divider"><a href="#" class="text-dark font-weight-semibold"
+                                                      data-filter=".sf-new">New Arrivals</a></li>
+                            <li>
+                                <hr>
+                            </li>
+                            {% for category in categories %}
+                                {% with category.product_set.all|first as obj %}
+                                    {% if obj != "" %}
+                                        <li><a href="#"
+                                               data-filter=".sf-{{ category.name | slugify }}"> {{ category.name }}</a>
+                                        </li>
+                                    {% endif %}
+                                {% endwith %}
+                            {% endfor %}
+                        </ul>
+
+                        <hr>
+
+                        <div>
+                            <h5 class="ls0 text-muted">Select Price:</h5>
+                            <input class="range_23"/>
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-10">
+                        <div id="shop" class="row shop grid-container" data-layout="fitRows">
+
+                            {% for product in products %}
+
+                                <div class="col-lg-4 col-md-6 mb-4 sf-{{ product.category.name | slugify }}">
+                                    <div class="product">
+                                        <div class="product-image position-relative">
+                                            <div class="fslider" data-pagi="false" data-speed="400" data-pause="200000">
+                                                <div class="flexslider">
+                                                    <div class="slider-wrap">
+                                                        {% with product.productimage_set.all as images_obj %}
+                                                            {% for object in images_obj %}
+                                                                <div class="slide">
+                                                                    <a href="{{ product.get_absolute_url }}"><img
+                                                                            src="{{ object.image.url }}"
+                                                                            alt="Black Shoe"></a>
+                                                                </div>
+                                                            {% endfor %}
+                                                        {% endwith %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <a href="#" class="cart-btn button button-white button-light"><i
+                                                    class="icon-line-plus"></i>Add to Cart</a>
+                                        </div>
+                                        <div class="product-desc">
+                                            <div class="product-title">
+                                                <h3><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></h3>
+                                                <span><a href="#">{{ product.category.name }}</a></span>
+                                            </div>
+                                            <div class="product-price">
+                                                <ins> ${{product.price|replace_comma_to_dot }}</ins>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section mb-0 py-6">
+                <div class="container-fluid">
+                    <div class="row justify-content-center m-auto" style="max-width: 1000px;">
+                        <div class="col-md-7">
+                            <p class="h6 mb-0 text-muted">Conveniently network effective total linkage via intermandated
+                                opportunities. Distinctively <a
+                                        href="mailto:noreply@canvas.com"><u>noreply@canvas.com</u></a> premium products.
+                            </p>
+                        </div>
+                        <div class="col-md-5 mt-3 mt-md-0">
+                            <h2 class="h1 font-weight-bold ls--1 color"><a href="tel:09876543211">(+0) 9876 543210</a>
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section><!-- #content end -->
+
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'js/components/rangeslider.min.js' %}"></script>
+    <script>
+        var priceRangefrom = 0,
+            priceRangeto = 0,
+            $container = null;
+        setTimeout(function () {
+            $container.imagesLoaded(function () {
+                $container.isotope({
+                    filter: '{{ js_filter }}',
+                });
+            });
+        }, 500);
+        jQuery(window).on('load', function () {
+
+            $container = $('#shop');
+
+            $container.isotope({transitionDuration: '0.65s'});
+
+            $('.shop-filter a').click(function () {
+                $('.shop-filter li').removeClass('activeFilter');
+                $(this).parent('li').addClass('activeFilter');
+                var selector = $(this).attr('data-filter');
+                $container.isotope({filter: selector});
+                return false;
+            });
+            $(window).resize(function () {
+                $container.isotope('layout');
+            });
+
+        });
+
+        jQuery(document).ready(function ($) {
+
+            $(".range_23").ionRangeSlider({
+                type: "double",
+                min: 9.99,
+                max: 99.99,
+                from: 9.99,
+                to: 99.99,
+                prefix: '$',
+                hide_min_max: true,
+                hide_from_to: false,
+                grid: false,
+                onStart: function (data) {
+                    priceRangefrom = data.from;
+                    priceRangeto = data.to;
+                },
+                onFinish: function (data) {
+                    priceRangefrom = data.from;
+                    priceRangeto = data.to;
+
+                    $container.isotope({
+                        filter: function () {
+
+                            if ($(this).find('.product-price').find('ins').length > 0) {
+                                var price = $(this).find('.product-price ins').text();
+                            } else {
+                                var price = $(this).find('.product-price').text();
+                            }
+
+                            priceNum = price.split("$");
+
+                            return (priceRangefrom <= priceNum[1] && priceRangeto >= priceNum[1]);
+                        }
+                    });
+
+                }
+            });
+
+        });
+    </script>
+{% endblock %}

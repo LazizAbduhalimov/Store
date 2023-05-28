@@ -40,10 +40,12 @@ class AdminState(admin.ModelAdmin):
         "name",
         "price",
         "category",
+        "sex",
         "is_active",
     ]
     list_editable = [
         "price",
+        "sex",
         "is_active",
     ]
 

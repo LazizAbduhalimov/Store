@@ -88,34 +88,52 @@
                         <li class="menu-item current"><a class="menu-link" href="{% url 'home' %}">
                             <div>Home</div>
                         </a></li>
-                        <li class="menu-item mega-menu"><a class="menu-link" href="{% url 'products-menu' %}">
+                        <li class="menu-item mega-menu"><a class="menu-link" href="{% url 'men-products-menu' %}">
                             <div>Men</div>
                         </a>
                             <div class="mega-menu-content mega-menu-style-2">
                                 <div class="container">
                                     <div class="row">
-                                    {% for base_category in base_categories %}
-                                        <ul class="mega-menu-column sub-menu-container border-left-0 col-lg-3">
+                                        <div class="col-8">
+                                            <div class="row">
+                                                {% for base_category in base_categories %}
+                                                    <ul class="mega-menu-column sub-menu-container border-left-0 col-4">
 
-                                                <li class="mega-menu-title menu-item">
-                                                <a class="menu-link" href="#">
-                                                    <div>{{ base_category.name }}</div>
-                                                </a>
-                                                <ul class="sub-menu-container">
-                                                    {% for sub_category in base_category.productsubcategory_set.all %}
-                                                        <li class="menu-item"><a class="menu-link " href="{% url 'products-menu' %}?filter=.sf-{{ sub_category.name|slugify }}">
-                                                        <div>{{ sub_category.name }}</div>
-                                                    </a></li>
-                                                    {% endfor %}
-                                                </ul>
-                                            </li>
-                                        </ul>
-                                    {% endfor %}
+                                                        <li class="mega-menu-title menu-item">
+                                                            <a class="menu-link" href="{% url 'men-products-menu' %}">
+                                                                <div>{{ base_category.name }}</div>
+                                                            </a>
+                                                            <ul class="sub-menu-container">
+                                                                {% for sub_category in base_category.productsubcategory_set.all %}
+                                                                    <li class="menu-item"><a class="menu-link "
+                                                                                             href="{% url 'men-products-menu' %}?filter=.sf-{{ sub_category.name|slugify }}">
+                                                                        <div>{{ sub_category.name }}</div>
+                                                                    </a></li>
+                                                                {% endfor %}
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <ul class="mega-menu-column sub-menu-container border-left-0">
+                                                <li class="card p-0 bg-transparent border-0">
+                                                    <img class="card-img-top"
+                                                         src="{% static 'demos/store/images/others/menu.jpg' %}"
+                                                         alt="image cap">
+                                                    <a href="#"
+                                                       class="btn btn-link text-left font-weight-medium pl-0 bg-transparent"><u>Editor's
+                                                        Pick</u></a>
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+
                         </li><!-- .mega-menu end -->
-                        <li class="menu-item"><a class="menu-link" href="{% url 'products-menu' %}">
+                        <li class="menu-item"><a class="menu-link" href="{% url 'women-products-menu' %}">
                             <div>Women</div>
                         </a></li>
                         <li class="menu-item mega-menu"><a class="menu-link" href="#">
@@ -200,7 +218,11 @@
                         <li class="menu-item"><a class="menu-link" href="{% url 'contact' %}">
                             <div>Contact</div>
                         </a></li>
-
+                        {% if request.user.is_authenticated %}
+                            <li class="menu-item"><a class="menu-link" href="{% url 'admin:index' %}">
+                                <div>Admin panel</div>
+                            </a></li>
+                        {% endif %}
                     </ul>
 
                 </nav><!-- #primary-menu end -->

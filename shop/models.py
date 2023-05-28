@@ -1,6 +1,21 @@
+from enum import Enum
+
 from django.db import models
 from ckeditor.fields import RichTextField
 from django.urls import reverse
+
+
+class SexEnum(str, Enum):
+    man = "M"
+    woman = "W"
+    unisex = "U"
+
+
+sex_choices = [
+    (SexEnum.man.value, 'Man'),
+    (SexEnum.woman.value, 'Women'),
+    (SexEnum.unisex.value, 'Unisex'),
+]
 
 
 class ProductBaseCategory(models.Model):
@@ -23,6 +38,7 @@ class Product(models.Model):
     description = RichTextField("Description")
     price = models.FloatField("Price", default=4.99)
     category = models.ForeignKey(ProductSubCategory, verbose_name="Category", on_delete=models.DO_NOTHING)
+    sex = models.CharField("Sex", default=SexEnum.man.value, max_length=1, choices=sex_choices)
 
     is_active = models.BooleanField("Is active", default=False)
 

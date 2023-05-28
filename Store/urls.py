@@ -23,7 +23,7 @@ from django.views.static import serve as mediaserve
 from django.urls import re_path
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls, name="admin"),
     path('', include('main_app.urls')),
     path('', include('shop.urls')),
 ]

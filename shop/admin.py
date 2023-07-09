@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 
-from .models import ProductBaseCategory, ProductSubCategory, Product, ProductImage
+from .models import ProductBaseCategory, ProductSubCategory, Product, ProductImage, ProductDetail
 
 
 class ProductImageInline(admin.TabularInline):
@@ -14,6 +14,11 @@ class ProductImageInline(admin.TabularInline):
     get_image.short_description = "Preview"
 
     extra = 0
+
+
+class ProductDetailInline(admin.TabularInline):
+    model = ProductDetail
+    extra = 3
 
 
 @admin.register(ProductBaseCategory)
@@ -48,8 +53,8 @@ class AdminState(admin.ModelAdmin):
         "sex",
         "is_active",
     ]
-
-    inlines = [ProductImageInline]
+    save_on_top = True
+    inlines = [ProductDetailInline, ProductImageInline]
 
     list_per_page = 15
 

@@ -1,5 +1,6 @@
 from django.views.generic import ListView, DetailView
 from django.db.models import Q
+from random import randint
 
 from main_app.mixins import HeaderMixin
 from .models import Product, ProductSubCategory, SexEnum
@@ -46,9 +47,33 @@ class ProductSinglePage(DetailView, HeaderMixin):
     template_name = "shop/product-single.html"
     model = Product
     slug_field = "pk"
+    context_object_name = "product"
 
     def get_context_data(self, **kwargs):
         context = super(ProductSinglePage, self).get_context_data(**kwargs)
         context["categories"] = ProductSubCategory.objects.all()
+        context["similar_products"] = Product.objects.filter(
+            is_active=True,
+            category=self.object.category).exclude(id__in=(self.object.id,)).distinct()
+
+        all_products = Product.objects.filter(is_active=True).exclude(id__in=(self.object.id,)).distinct()
+        if len(all_products) > 4:
+            r_num = randint(0, len(all_products)-5)
+            other_products = all_products[r_num:r_num+4]
+        else:
+            other_products = all_products
+
+        context["other_products"] = other_products
+
         return dict(list(context.items()) + list(self.get_user_context().items()))
 
+
+class CartPage(ListView, HeaderMixin):
+    template_name = "shop/cart.html"
+    model = Product
+    queryset = model.objects.all()
+    context_object_name = "products"
+
+    def get_context_data(self, **kwargs):
+        context = super(CartPage, self).get_context_data(**kwargs)
+        return dict(list(context.items()) + list(self.get_user_context().items()))

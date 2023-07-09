@@ -39,7 +39,6 @@ class Product(models.Model):
     price = models.FloatField("Price", default=4.99)
     category = models.ForeignKey(ProductSubCategory, verbose_name="Category", on_delete=models.DO_NOTHING)
     sex = models.CharField("Sex", default=SexEnum.man.value, max_length=1, choices=sex_choices)
-
     is_active = models.BooleanField("Is active", default=False)
 
     def get_absolute_url(self):
@@ -52,6 +51,15 @@ class Product(models.Model):
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, verbose_name="Product image", on_delete=models.CASCADE)
     image = models.ImageField("Image", upload_to="images/products/}")
+
+    def __str__(self):
+        return "{}-{}".format(self.product.name, self.id)
+
+
+class ProductDetail(models.Model):
+    product = models.ForeignKey(Product, verbose_name="Product image", on_delete=models.CASCADE)
+    item = models.CharField("Item", max_length=50, default="")
+    description = models.CharField("Description", max_length=100, default="")
 
     def __str__(self):
         return "{}-{}".format(self.product.name, self.id)

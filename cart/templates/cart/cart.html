@@ -5,6 +5,10 @@
     Store | Cart
 {% endblock %}
 
+{% block modal %}
+    {% include "blocks/modal.html" %}
+{% endblock %}
+
 {% block content %}
     <section id="page-title" class="page-title-parallax page-title-dark page-title-center"
              style="background-image: url('{% static 'demos/store/images/men/page-title.jpg' %}'); background-size: cover; padding: 170px 0 100px;"
@@ -38,97 +42,38 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr class="cart_item">
+                    {% for product_in_order in order.get_products %}
+                        <tr class="cart_item">
                         <td class="cart-product-remove">
-                            <a href="#" class="remove" title="Remove this item"><i class="icon-trash2"></i></a>
+                            <a href="{% url 'remove-product' product_in_order.product.pk %}" class="remove" title="Remove this item"><i class="icon-trash2"></i></a>
                         </td>
-
                         <td class="cart-product-thumbnail">
-                            <a href="#"><img width="64" height="64" src="images/shop/thumbs/small/dress-3.jpg"
+                            <a href="#"><img width="64" height="64" src="{{ product_in_order.product.get_images.first.image.url }}"
                                              alt="Pink Printed Dress"></a>
                         </td>
 
                         <td class="cart-product-name">
-                            <a href="#">Pink Printed Dress</a>
+                            <a href="#">{{ product_in_order.product.name }}</a>
                         </td>
 
                         <td class="cart-product-price">
-                            <span class="amount">$19.99</span>
+                            <span class="amount">{{product_in_order.product.price}}</span>
                         </td>
 
                         <td class="cart-product-quantity">
                             <div class="quantity">
-                                <input type="button" value="-" class="minus">
-                                <input type="text" name="quantity" value="2" class="qty"/>
-                                <input type="button" value="+" class="plus">
+                                <input type="button" value="-" class="minus" onclick="location.href='http://127.0.0.1:8000/{% url "substract-product" product_in_order.product.pk %}';">
+                                <input type="text" name="quantity" value="{{ product_in_order.amount }}" class="qty"/>
+                                <input type="button" value="+" class="plus" onclick="location.href='http://127.0.0.1:8000/{% url "add-product" product_in_order.product.pk %}';">
                             </div>
                         </td>
 
                         <td class="cart-product-subtotal">
-                            <span class="amount">$39.98</span>
+                            <span class="amount">${{ product_in_order.get_total_price }}</span>
                         </td>
                     </tr>
-                    <tr class="cart_item">
-                        <td class="cart-product-remove">
-                            <a href="#" class="remove" title="Remove this item"><i class="icon-trash2"></i></a>
-                        </td>
-
-                        <td class="cart-product-thumbnail">
-                            <a href="#"><img width="64" height="64" src="images/shop/thumbs/small/shoes-2.jpg"
-                                             alt="Checked Canvas Shoes"></a>
-                        </td>
-
-                        <td class="cart-product-name">
-                            <a href="#">Checked Canvas Shoes</a>
-                        </td>
-
-                        <td class="cart-product-price">
-                            <span class="amount">$24.99</span>
-                        </td>
-
-                        <td class="cart-product-quantity">
-                            <div class="quantity">
-                                <input type="button" value="-" class="minus">
-                                <input type="text" name="quantity" value="1" class="qty"/>
-                                <input type="button" value="+" class="plus">
-                            </div>
-                        </td>
-
-                        <td class="cart-product-subtotal">
-                            <span class="amount">$24.99</span>
-                        </td>
-                    </tr>
-                    <tr class="cart_item">
-                        <td class="cart-product-remove">
-                            <a href="#" class="remove" title="Remove this item"><i class="icon-trash2"></i></a>
-                        </td>
-
-                        <td class="cart-product-thumbnail">
-                            <a href="#"><img width="64" height="64" src="images/shop/thumbs/small/tshirt-2.jpg"
-                                             alt="Pink Printed Dress"></a>
-                        </td>
-
-                        <td class="cart-product-name">
-                            <a href="#">Blue Men Tshirt</a>
-                        </td>
-
-                        <td class="cart-product-price">
-                            <span class="amount">$13.99</span>
-                        </td>
-
-                        <td class="cart-product-quantity">
-                            <div class="quantity">
-                                <input type="button" value="-" class="minus">
-                                <input type="text" name="quantity" value="3" class="qty"/>
-                                <input type="button" value="+" class="plus">
-                            </div>
-                        </td>
-
-                        <td class="cart-product-subtotal">
-                            <span class="amount">$41.97</span>
-                        </td>
-                    </tr>
-                    <tr class="cart_item">
+                    {% endfor %}
+                    <!-- <tr class="cart_item">
                         <td colspan="6">
                             <div class="row justify-content-between py-2 col-mb-30">
                                 <div class="col-lg-auto pl-lg-0">
@@ -149,7 +94,7 @@
                                 </div>
                             </div>
                         </td>
-                    </tr>
+                    </tr> -->
                     </tbody>
 
                 </table>
@@ -432,7 +377,7 @@
                                     </td>
 
                                     <td class="cart-product-name">
-                                        <span class="amount">$106.94</span>
+                                        <span class="amount">${{ order.get_total_price }}</span>
                                     </td>
                                 </tr>
                                 <tr class="cart_item">
@@ -450,7 +395,7 @@
                                     </td>
 
                                     <td class="cart-product-name">
-                                        <span class="amount color lead"><strong>$106.94</strong></span>
+                                        <span class="amount color lead"><strong>${{ order.get_total_price }}</strong></span>
                                     </td>
                                 </tr>
                                 </tbody>

@@ -6,3 +6,23 @@
 -----------------------------------------------------------------*/
 
 
+.link {
+  position: relative;
+  display: block;
+  margin:50px auto;
+  height: 1px;
+  width: 1px;
+  background: pink;
+  cursor: pointer;
+}
+
+.link:before {
+  content: '';
+  position: absolute;
+  display: block;
+  top: -15px;
+  left: -15px;
+  right: -15px;
+  bottom: -15px;
+  background: rgba(255, 0, 0, 0.06);//цвет убрать
+}

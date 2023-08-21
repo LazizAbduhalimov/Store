@@ -44,6 +44,9 @@ class Product(models.Model):
     def get_absolute_url(self):
         return reverse('product-single', kwargs={'slug': self.pk})
 
+    def get_images(self):
+        return self.productimage_set.all()
+
     def __str__(self):
         return f"{self.name}-{self.id}"
 

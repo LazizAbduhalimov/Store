@@ -1,7 +1,10 @@
-from django.views.generic import ListView, DetailView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
+from django.views.generic import ListView, DetailView, UpdateView
 from django.db.models import Q
 from random import randint
 
+from cart.models import Order
 from main_app.mixins import HeaderMixin
 from .models import Product, ProductSubCategory, SexEnum
 
@@ -65,15 +68,4 @@ class ProductSinglePage(DetailView, HeaderMixin):
 
         context["other_products"] = other_products
 
-        return dict(list(context.items()) + list(self.get_user_context().items()))
-
-
-class CartPage(ListView, HeaderMixin):
-    template_name = "shop/cart.html"
-    model = Product
-    queryset = model.objects.all()
-    context_object_name = "products"
-
-    def get_context_data(self, **kwargs):
-        context = super(CartPage, self).get_context_data(**kwargs)
         return dict(list(context.items()) + list(self.get_user_context().items()))

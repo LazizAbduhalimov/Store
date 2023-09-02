@@ -124,17 +124,19 @@
 
                                 <!-- Product Single - Quantity & Cart Button
                                 ============================================= -->
-                                <form class="cart mb-0 d-flex justify-content-between align-items-center" method="post"
-                                      enctype='multipart/form-data'>
-                                    <div class="quantity clearfix">
-                                        <input type="button" value="-" class="minus">
-                                        <input type="number" step="1" min="1" name="quantity" value="1" title="Qty"
-                                               class="qty"/>
-                                        <input type="button" value="+" class="plus">
-                                    </div>
-                                    <button type="submit" class="add-to-cart button button-large m-0">Add to cart</button>
-                                    <a href="{% url 'add-product' object.pk %}" class="add-to-cart button button-large m-0">Add to cart</a>
-                                </form><!-- Product Single - Quantity & Cart Button End -->
+                                <div>
+{#                                    <div class="quantity clearfix">#}
+{#                                        <input type="button" value="-" class="minus">#}
+{#                                        <input type="number" step="1" min="1" name="quantity" value="1" title="Qty"#}
+{#                                               class="qty"/>#}
+{#                                        <input type="button" value="+" class="plus">#}
+{#                                    </div>#}
+                                    {% if not is_added_to_cart %}
+                                        <a href="{% url 'add-product' object.pk %}" class="add-to-cart button button-large m-0">Add to cart</a>
+                                    {% else %}
+                                        <a href="#" class="add-to-cart button button-large m-0">Added to cart</a>
+                                    {% endif %}
+                                </div>
 
                                 <div class="line line-sm"></div>
 

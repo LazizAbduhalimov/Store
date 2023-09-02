@@ -1,9 +1,6 @@
 from django.views.generic import ListView
-from rest_framework.generics import ListAPIView
-from rest_framework.renderers import TemplateHTMLRenderer
-from rest_framework.views import APIView
 
-from shop.models import ProductBaseCategory, ProductSubCategory, Product
+from shop.models import ProductSubCategory, Product
 from .mixins import HeaderMixin
 from .models import Slider, Collection, BranchOffice
 
@@ -18,7 +15,7 @@ class MainPage(ListView, HeaderMixin):
         context = super(MainPage, self).get_context_data(**kwargs)
         context["sliders"] = Slider.objects.filter(is_active=True)
         context["collections"] = Collection.objects.filter(is_active=True)
-        context["categories"] = ProductSubCategory.objects.all()
+        context["categories"] = ProductSubCategory.objects.filter(product__isnull=False).distinct()
         context["js_filter"] = self.request.GET.get("filter", "*")
         return dict(list(context.items()) + list(self.get_user_context().items()))
 

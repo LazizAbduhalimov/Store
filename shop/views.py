@@ -1,6 +1,5 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, UpdateView
+from django.core.exceptions import ObjectDoesNotExist
+from django.views.generic import ListView, DetailView
 from django.db.models import Q
 from random import randint
 
@@ -68,4 +67,12 @@ class ProductSinglePage(DetailView, HeaderMixin):
 
         context["other_products"] = other_products
 
+        try:
+            order = Order.objects.get(user=self.request.user)
+            order.get_products().get(product=self.object)
+            is_added_to_cart = True
+        except ObjectDoesNotExist:
+            is_added_to_cart = False
+
+        context["is_added_to_cart"] = is_added_to_cart
         return dict(list(context.items()) + list(self.get_user_context().items()))

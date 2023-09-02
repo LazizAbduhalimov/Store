@@ -34,37 +34,24 @@
                                 <h4>Shopping Cart</h4>
                             </div>
                             <div class="top-cart-items">
-                                <div class="top-cart-item">
+                                {% for product in cart.get_products %}
+                                    <div class="top-cart-item">
                                     <div class="top-cart-item-image">
-                                        <a href="#"><img src="{% static 'demos/shop/images/items/featured/5.jpg' %}"
-                                                         alt="Blue Shoulder Bag"/></a>
+                                        <a href="#"><img src="{{product.product.get_images.first.image.url}}"
+                                                         alt="{{product.product.get_images.first.image.name}}"/></a>
                                     </div>
                                     <div class="top-cart-item-desc">
                                         <div class="top-cart-item-desc-title">
-                                            <a href="#" class="font-weight-normal">White athletic shoe</a>
-                                            <span class="top-cart-item-price d-block">$35.00</span>
+                                            <a href="#" class="font-weight-normal">{{product.product.get_images.first.image.description}}</a>
+                                            <span class="top-cart-item-price d-block">${{ product.get_total_price }}</span>
                                         </div>
-                                        <div class="top-cart-item-quantity font-weight-semibold">x 1</div>
+                                        <div class="top-cart-item-quantity font-weight-semibold">x {{ product.amount }}</div>
                                     </div>
                                 </div>
-                                <div class="top-cart-item">
-                                    <div class="top-cart-item-image">
-                                        <a href="#" class="font-weight-normal"><img
-                                                src="{% static 'demos/shop/images/items/featured/1.jpg' %}"
-                                                alt="Leather Bag"/></a>
-                                    </div>
-                                    <div class="top-cart-item-desc">
-                                        <div class="top-cart-item-desc-title">
-                                            <a href="#" class="font-weight-normal">Round Neck Solid Light Blue Colour
-                                                T-shirts</a>
-                                            <span class="top-cart-item-price d-block">$12.49</span>
-                                        </div>
-                                        <div class="top-cart-item-quantity font-weight-semibold">x 2</div>
-                                    </div>
-                                </div>
+                                {% endfor %}
                             </div>
                             <div class="top-cart-action">
-                                <span class="top-checkout-price font-weight-semibold text-dark">$59.98</span>
+                                <span class="top-checkout-price font-weight-semibold text-dark">${{ cart.get_total_price }}</span>
                                 <a class="button button-dark button-small m-0" href="{% url 'cart' %}">View Cart</a>
                             </div>
                         </div>

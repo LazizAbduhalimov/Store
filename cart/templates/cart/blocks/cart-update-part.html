@@ -1,0 +1,40 @@
+{% load static %}
+{% for product_in_order in order.products %}
+    <tr class="cart_item">
+        <td class="cart-product-remove">
+            <a href="{% url 'remove-product' product_in_order.product.pk %}" class="remove"
+               title="Remove this item"><i
+                    class="icon-trash2"></i></a>
+        </td>
+        <td class="cart-product-thumbnail">
+            {% if product_in_order.product.images.first.image.url %}
+                <a href="#"><img width="64" height="64" src="{{ product_in_order.product.images.first.image.url }}"
+                                 alt="Pink Printed Dress"></a>
+            {% else %}
+                <a href="#"><img width="64" height="64" src="{% static 'images/no-image-available.jpg' %}"
+                                 alt="Pink Printed Dress"></a>
+            {% endif %}
+        </td>
+
+        <td class="cart-product-name">
+            <a href="{{ product_in_order.product.get_absolute_url }}">{{ product_in_order.product.name }}</a>
+        </td>
+
+        <td class="cart-product-price">
+            <span class="amount">${{ product_in_order.product.price }}</span>
+        </td>
+
+        <td class="cart-product-quantity">
+            <div class="quantity">
+                <input type="button" value="-" class="minus"
+                        hx-get="{% url 'substract-product' product_in_order.product.pk %}">
+                <input type="text" name="quantity" value="{{ product_in_order.amount }}" class="qty"/>
+                <input type="button" value="+" class="plus" hx-get="{% url 'add-product' product_in_order.product.pk %}">
+            </div>
+        </td>
+
+        <td class="cart-product-subtotal">
+            <span class="amount">${{ product_in_order.get_total_price }}</span>
+        </td>
+    </tr>
+{% endfor %}

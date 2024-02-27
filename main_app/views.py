@@ -5,7 +5,7 @@ from .mixins import HeaderMixin
 from .models import Slider, Collection, BranchOffice
 
 
-class MainPage(ListView, HeaderMixin):
+class MainPage(HeaderMixin, ListView):
     model = Product
     template_name = "main_app/index.html"
     queryset = model.objects.filter(is_active=True)
@@ -20,7 +20,7 @@ class MainPage(ListView, HeaderMixin):
         return dict(list(context.items()) + list(self.get_user_context().items()))
 
 
-class ContactPage(ListView, HeaderMixin):
+class ContactPage(HeaderMixin, ListView):
     model = BranchOffice
     template_name = "main_app/contacts.html"
     queryset = model.objects.filter(is_active=True)

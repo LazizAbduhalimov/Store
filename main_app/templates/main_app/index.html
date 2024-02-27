@@ -1,5 +1,5 @@
 {% extends "blocks/base.html" %}
-{% load static%}
+{% load static %}
 
 {% block title %}
     Home Page | Store
@@ -13,103 +13,110 @@
 {% block content %}
     <!-- Slider
 		============================================= -->
-    <section id="slider" class="slider-element swiper_wrapper min-vh-100" data-loop="true" data-speed="1000" data-autoplay="5000">
-			<div class="slider-inner">
+    <section id="slider" class="slider-element swiper_wrapper min-vh-100" data-loop="true" data-speed="1000"
+             data-autoplay="5000">
+        <div class="slider-inner">
 
-				<div class="swiper-container swiper-parent">
-					<div class="swiper-wrapper">
-                        {% for slider in sliders %}
-                            <div class="swiper-slide dark">
-							<div class="container">
-								<div class="slider-caption">
-									<h2 data-animate="fadeInUp">{{ slider.title }}</h2>
-									<p class="mb-4" data-animate="fadeInUp" data-delay="100">A New Collection of Summer 2019.</p>
-									<div>
-										<a href="{% url 'men-products-menu' %}" data-animate="fadeInUp" data-delay="200" class="button button-large button-white button-light">Shop Men</a>
-										<a href="{% url 'women-products-menu' %}" data-animate="fadeInUp" data-delay="200" class="button button-large button-white button-light">Shop Women</a>
-									</div>
-								</div>
-							</div>
-							<div class="swiper-slide-bg" style="background-image: url({{ slider.image.url }});"></div>
-						</div>
-                        {% endfor %}
-					</div>
-					<div class="slider-arrow-left"><i class="icon-angle-left"></i></div>
-					<div class="slider-arrow-right"><i class="icon-angle-right"></i></div>
-					<div class="slide-number"><div class="slide-number-current"></div><span>/</span><div class="slide-number-total"></div></div>
-				</div>
+            <div class="swiper-container swiper-parent">
+                <div class="swiper-wrapper">
+                    {% for slider in sliders %}
+                        <div class="swiper-slide dark">
+                            <div class="container">
+                                <div class="slider-caption">
+                                    <h2 data-animate="fadeInUp">{{ slider.title }}</h2>
+                                    <p class="mb-4" data-animate="fadeInUp" data-delay="100">A New Collection of Summer
+                                        2019.</p>
+                                    <div>
+                                        <a href="{% url 'men-products-menu' %}" data-animate="fadeInUp" data-delay="200"
+                                           class="button button-large button-white button-light">Shop Men</a>
+                                        <a href="{% url 'women-products-menu' %}" data-animate="fadeInUp"
+                                           data-delay="200" class="button button-large button-white button-light">Shop
+                                            Women</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="swiper-slide-bg" style="background-image: url({{ slider.image.url }});"></div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="slider-arrow-left"><i class="icon-angle-left"></i></div>
+                <div class="slider-arrow-right"><i class="icon-angle-right"></i></div>
+                <div class="slide-number">
+                    <div class="slide-number-current"></div>
+                    <span>/</span>
+                    <div class="slide-number-total"></div>
+                </div>
+            </div>
 
-				<div class="social-icons">
-					<a href="#" class="social-icon si-small si-borderless si-rounded si-facebook">
-						<i class="icon-facebook text-white-50"></i>
-						<i class="icon-facebook"></i>
-					</a>
-					<a href="#" class="social-icon si-small si-borderless si-rounded si-instagram">
-						<i class="icon-instagram text-white-50"></i>
-						<i class="icon-instagram"></i>
-					</a>
-					<a href="#" class="social-icon si-small si-borderless si-rounded si-youtube">
-						<i class="icon-youtube text-white-50"></i>
-						<i class="icon-youtube"></i>
-					</a>
-				</div>
+            <div class="social-icons">
+                <a href="#" class="social-icon si-small si-borderless si-rounded si-facebook">
+                    <i class="icon-facebook text-white-50"></i>
+                    <i class="icon-facebook"></i>
+                </a>
+                <a href="#" class="social-icon si-small si-borderless si-rounded si-instagram">
+                    <i class="icon-instagram text-white-50"></i>
+                    <i class="icon-instagram"></i>
+                </a>
+                <a href="#" class="social-icon si-small si-borderless si-rounded si-youtube">
+                    <i class="icon-youtube text-white-50"></i>
+                    <i class="icon-youtube"></i>
+                </a>
+            </div>
 
-			</div>
-		</section><!-- #Slider End -->
+        </div>
+    </section><!-- #Slider End -->
 
     <!-- Content
     ============================================= -->
     <section id="content">
         <div class="content-wrap pb-0">
-
-            <!-- Login/Register Modal -->
-            <div class="modal-register mfp-hide" id="modal-register">
-                <div class="card mx-auto" style="max-width: 540px;">
-                    <div class="card-header py-3 bg-transparent center">
-                        <h3 class="mb-0 font-weight-normal">Hello, Welcome Back</h3>
-                    </div>
-                    <div class="card-body mx-auto py-5" style="max-width: 70%;">
-
-                        <a href="#"
-                           class="button button-large btn-block si-colored si-facebook nott font-weight-normal ls0 center m-0"><i
-                                class="icon-facebook-sign"></i> Log in with Facebook</a>
-
-                        <div class="divider divider-center"><span class="position-relative" style="top: -2px">OR</span>
+            {% if messages %}
+                <div class="container clearfix">
+                    <div class="modal-on-load" data-target="#myModal1"></div>
+                    <!-- Modal -->
+                    <div class="modal1 mfp-hide" id="myModal1">
+                        <div class="block mx-auto" style="background-color: #FFF; max-width: 500px;">
+                            <div class="center" style="padding: 50px;">
+                                <h3>New Message:</h3>
+                                {% for message in messages %}
+                                    {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                                        <div class="style-msg successmsg">
+                                            <div class="sb-msg"><i class="icon-thumbs-up"></i>
+                                                {{ message | safe }}
+                                            </div>
+                                        </div>
+                                    {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                                        <div class="style-msg errormsg">
+                                            <div class="sb-msg"><i class="icon-remove"></i>
+                                                {{ message | safe}}
+                                            </div>
+                                        </div>
+                                    {% else %}
+                                        <div class="style-msg infomsg">
+                                            <div class="sb-msg">
+                                                <i class="icon-info-sign"></i>
+                                                {{ message | safe }}
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                            <div class="section center m-0" style="padding: 30px;">
+                                <a href="#" class="button" onClick="$.magnificPopup.close();return false;">Close</a>
+                            </div>
                         </div>
-
-                        <form id="login-form" name="login-form" class="mb-0 row" action="#" method="post">
-
-                            <div class="col-12">
-                                <input type="text" id="login-form-username" name="login-form-username" value=""
-                                       class="form-control not-dark" placeholder="Username"/>
-                            </div>
-
-                            <div class="col-12 mt-4">
-                                <input type="password" id="login-form-password" name="login-form-password" value=""
-                                       class="form-control not-dark" placeholder="Password"/>
-                            </div>
-
-                            <div class="col-12 text-right">
-                                <a href="#" class="text-dark font-weight-light mt-2">Forgot Password?</a>
-                            </div>
-
-                            <div class="col-12 mt-4">
-                                <button class="button btn-block m-0" id="login-form-submit" name="login-form-submit"
-                                        value="login">Login
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="card-footer py-4 center">
-                        <p class="mb-0">Don't have an account? <a href="#"><u>Sign up</u></a></p>
                     </div>
                 </div>
-            </div>
+            {% endif %}
+
+            <!-- Login/Register Modal -->
+            {% include "registration/login.html" %}
 
             <div class="container-fluid">
                 <div class="mx-auto center bottommargin" style="max-width: 700px">
                     <h2>Fresh Collection of 2019 </h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto aspernatur repudiandae nobis
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto aspernatur repudiandae
+                        nobis
                         earum voluptate id adipisci nostrum mollitia, ipsam, asperiores, soluta dolorem facere
                         exercitationem laborum. Magni mollitia laudantium vel tempore.</p>
                 </div>
@@ -118,18 +125,19 @@
                 <div class="row mt-2">
                     {% for collection in collections %}
                         <div class="col-md-4 mb-5">
-                        <div class="card cat-card rounded-0 border-0 dark">
-                            <img src="{{ collection.image.url }}" class="card-img rounded-0"
-                                 alt="...">
-                            <div class="d-flex align-items-start flex-column card-img-overlay p-4">
-                                <h3 class="h3 text-white ls--1 font-weight-bold mt-2 mb-auto">{{ collection.sale }}</h3>
-                                <h3 class="h2 text-white ls--1 font-weight-bold mb-4">{{ collection.title }}</h3>
-                                <p>{{ collection.subtitle }}</p>
-                                <a href="{% url 'men-products-menu' %}" class="button button button-white button-light ml-0">Shop
-                                    Now</a>
+                            <div class="card cat-card rounded-0 border-0 dark">
+                                <img src="{{ collection.image.url }}" class="card-img rounded-0"
+                                     alt="...">
+                                <div class="d-flex align-items-start flex-column card-img-overlay p-4">
+                                    <h3 class="h3 text-white ls--1 font-weight-bold mt-2 mb-auto">{{ collection.sale }}</h3>
+                                    <h3 class="h2 text-white ls--1 font-weight-bold mb-4">{{ collection.title }}</h3>
+                                    <p>{{ collection.subtitle }}</p>
+                                    <a href="{% url 'men-products-menu' %}"
+                                       class="button button button-white button-light ml-0">Shop
+                                        Now</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
                     {% endfor %}
                 </div>
             </div>
@@ -152,10 +160,12 @@
                     <div class="col-md-6 mb-5">
                         <img src="{% static 'demos/store/images/others/store.jpg' %}" alt="image" class="mb-4">
                         <h4 class="mb-2">Our Melbourne Store</h4>
-                        <p class="mb-2">Authoritatively deliver 2.0 niches vis-a-vis backward-compatible infomediaries.
+                        <p class="mb-2">Authoritatively deliver 2.0 niches vis-a-vis backward-compatible
+                            infomediaries.
                             Authoritatively actualize empowered e-tailers with just in time.</p>
-                        <p class="mb-3"><i class="icon-map-marker-alt"></i> <strong>Headquarters: </strong><a href="#"
-                                                                                                              class="text-black-50 under btn-link">
+                        <p class="mb-3"><i class="icon-map-marker-alt"></i> <strong>Headquarters: </strong><a
+                                href="#"
+                                class="text-black-50 under btn-link">
                             795 Folsom Ave, Suite 600 San Francisco, CA 94107</a></p>
                         <a href="#" class="btn p-0 font-weight-semibold"><u>Visit Our Store</u> <i
                                 class="icon-line-arrow-right position-relative ml-1" style="top: 2px"></i></a>
@@ -165,7 +175,8 @@
 
             <div class="section m-0 border-0" style="padding: 120px 0;">
                 <div class="video-wrap" style="z-index: 0">
-                    <video poster="{% static 'images/portrait/video-poster.jpg' %}" preload="auto" loop autoplay muted>
+                    <video poster="{% static 'images/portrait/video-poster.jpg' %}" preload="auto" loop autoplay
+                           muted>
                         <source src='{% static 'images/portrait/video.mp4' %}' type='video/mp4'/>
                     </video>
                     <div class="video-overlay" style="background: rgba(0,0,0,0.2)"></div>
@@ -196,7 +207,8 @@
                     <div class="row">
                         <div class="col-md-3 col-sm-6">
                             <h4 class="text-uppercase">Shipping Worldwide</h4>
-                            <p>Minimum $999 for free Shipping. Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                            <p>Minimum $999 for free Shipping. Lorem ipsum dolor sit amet, consectetur adipisicing
+                                elit.
                                 Odio sequi natus eveniet, dicta magni! Modi nihil quis quos at mollitia.</p>
                         </div>
                         <div class="col-md-3 col-sm-6">
@@ -248,13 +260,16 @@
                 <div class="container-fluid">
                     <div class="row justify-content-center m-auto" style="max-width: 1000px;">
                         <div class="col-md-7">
-                            <p class="h6 mb-0 text-muted">Conveniently network effective total linkage via intermandated
+                            <p class="h6 mb-0 text-muted">Conveniently network effective total linkage via
+                                intermandated
                                 opportunities. Distinctively <a
-                                        href="mailto:noreply@canvas.com"><u>noreply@canvas.com</u></a> premium products.
+                                        href="mailto:noreply@canvas.com"><u>noreply@canvas.com</u></a> premium
+                                products.
                             </p>
                         </div>
                         <div class="col-md-5 mt-3 mt-md-0">
-                            <h2 class="h1 font-weight-bold ls--1 color"><a href="tel:09876543211">(+0) 9876 543210</a>
+                            <h2 class="h1 font-weight-bold ls--1 color"><a href="tel:09876543211">(+0) 9876
+                                543210</a>
                             </h2>
                         </div>
                     </div>

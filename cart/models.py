@@ -7,12 +7,13 @@ from shop.models import Product
 class Order(models.Model):
     user = models.ForeignKey(User, verbose_name="User", on_delete=models.CASCADE)
 
-    def get_products(self):
+    @property
+    def products(self):
         return self.productorder_set.all()
 
     def get_total_price(self):
         total = 0
-        products_in_order = self.get_products()
+        products_in_order = self.products
         for product in products_in_order:
             total += product.get_total_price()
 

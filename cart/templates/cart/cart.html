@@ -1,6 +1,11 @@
 {% extends "blocks/base.html" %}
 {% load static %}
 
+{% block extra_css %}
+    <script src="https://unpkg.com/htmx.org@1.9.5" integrity="sha384-xcuj3WpfgjlKF+FXhSQFQ0ZNr39ln+hwjN3npfM9VBnUskLolQAcN80McRIVOPuO"
+            crossorigin="anonymous"></script>
+{% endblock %}
+
 {% block title %}
     Store | Cart
 {% endblock %}
@@ -29,7 +34,7 @@
     <section id="content">
         <div class="content-wrap">
             <div class="container">
-
+                {% include "registration/login.html" %}
                 <table class="table cart mb-5">
                     <thead>
                     <tr>
@@ -42,37 +47,11 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {% for product_in_order in order.get_products %}
-                        <tr class="cart_item">
-                        <td class="cart-product-remove">
-                            <a href="{% url 'remove-product' product_in_order.product.pk %}" class="remove" title="Remove this item"><i class="icon-trash2"></i></a>
-                        </td>
-                        <td class="cart-product-thumbnail">
-                            <a href="#"><img width="64" height="64" src="{{ product_in_order.product.get_images.first.image.url }}"
-                                             alt="Pink Printed Dress"></a>
-                        </td>
+                    {% load static %}
+                    <div id="products-htmx" hx-get="{% url 'refresh-cart' %}" hx-on="htmx:afterRequest">
+                        {% include "cart/blocks/cart-update-part.html" %}
+                    </div>
 
-                        <td class="cart-product-name">
-                            <a href="#">{{ product_in_order.product.name }}</a>
-                        </td>
-
-                        <td class="cart-product-price">
-                            <span class="amount">{{product_in_order.product.price}}</span>
-                        </td>
-
-                        <td class="cart-product-quantity">
-                            <div class="quantity">
-                                <input type="button" value="-" class="minus" onclick="location.href='http://127.0.0.1:8000/{% url "substract-product" product_in_order.product.pk %}';">
-                                <input type="text" name="quantity" value="{{ product_in_order.amount }}" class="qty"/>
-                                <input type="button" value="+" class="plus" onclick="location.href='http://127.0.0.1:8000/{% url "add-product" product_in_order.product.pk %}';">
-                            </div>
-                        </td>
-
-                        <td class="cart-product-subtotal">
-                            <span class="amount">${{ product_in_order.get_total_price }}</span>
-                        </td>
-                    </tr>
-                    {% endfor %}
                     <!-- <tr class="cart_item">
                         <td colspan="6">
                             <div class="row justify-content-between py-2 col-mb-30">
@@ -98,7 +77,6 @@
                     </tbody>
 
                 </table>
-
                 <div class="row col-mb-30">
                     <div class="col-lg-6">
                         <h4>Calculate Shipping</h4>
@@ -368,7 +346,7 @@
                     <div class="col-lg-6">
                         <h4>Cart Totals</h4>
 
-                        <div class="table-responsive">
+                        <div class="table-responsive" id="total-price-htmx">
                             <table class="table cart cart-totals">
                                 <tbody>
                                 <tr class="cart_item">
@@ -399,12 +377,10 @@
                                     </td>
                                 </tr>
                                 </tbody>
-
                             </table>
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </section><!-- #content end -->

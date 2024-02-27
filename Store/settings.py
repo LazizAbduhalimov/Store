@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -40,6 +41,8 @@ INSTALLED_APPS = [
 
     # extra apps
     'ckeditor',
+    'widget_tweaks',
+    'rest_framework',
 ]
 
 CUSTOM_APPS = [
@@ -116,14 +119,90 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = 'ru'
-
+LANGUAGE_CODE = 'en'
 TIME_ZONE = 'Asia/Tashkent'
-
 USE_I18N = True
-
 USE_TZ = True
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = "cardioresp@yandex.ru"
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+EMAIL_HOST_PASSWORD = "qwnexvjhejmdchho"
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
+
+JAZZMIN_SETTINGS = {
+    "site_header": "Administration", "site_brand": "Administration",
+    "login_logo": None, "login_logo_dark": None,
+    "site_icon": None, "welcome_sign": "Website administration",
+    "copyright": "Store", "user_avatar": None,
+    # "search_model": ["blogs.article"],
+    "topmenu_links": [
+
+        # external url that opens in a new window (Permissions can be added)
+        {"name": "Go to site", "url": 'http://127.0.0.1:8000/',
+         "new_window": True},
+
+        # model admin to link to (Permissions checked against model)
+        {"model": "auth.User"},
+
+        # App with dropdown menu to all its models pages (Permissions checked against models)
+        # {"app": "blogs"},
+    ],
+    "usermenu_links": [
+        {"model": "auth.user"}
+    ],
+    "show_sidebar": True, "navigation_expanded": True, "hide_apps": ["auth"], "hide_models": [],
+    "order_with_respect_to": [
+        "main_app", "main_app.page", "main_app.editorialmember", "main_app.post",
+        "blogs", "blogs.volume", "blogs.article", "blog.comment", "blog.articlesection", "blog.tags"
+    ],
+    "icons": {
+        "auth": "fas fa-users-cog",
+        "auth.user": "fas fa-user",
+        "auth.Group": "fas fa-users",
+    },
+    "show_ui_builder": False,
+    "default_icon_parents": "fas fa-chevron-circle-right", "default_icon_children": "fas fa-circle",
+    "related_modal_active": False, "custom_css": None, "custom_js": None, "use_google_fonts_cdn": True,
+    "changeform_format": "carousel",
+    "changeform_format_overrides": {"auth.user": "collapsible", "auth.group": "vertical_tabs"},
+}
+
+JAZZMIN_UI_TWEAKS = {
+    "navbar_small_text": False,
+    "footer_small_text": True,
+    "body_small_text": False,
+    "brand_small_text": False,
+    "brand_colour": False,
+    "accent": "accent-primary",
+    "navbar": "navbar-dark",
+    "no_navbar_border": False,
+    "navbar_fixed": True,
+    "layout_boxed": False,
+    "footer_fixed": False,
+    "sidebar_fixed": True,
+    "sidebar": "sidebar-dark-primary",
+    "sidebar_nav_small_text": False,
+    "sidebar_disable_expand": False,
+    "sidebar_nav_child_indent": False,
+    "sidebar_nav_compact_style": False,
+    "sidebar_nav_legacy_style": False,
+    "sidebar_nav_flat_style": False,
+    "theme": "default",
+    "dark_mode_theme": None,
+    "button_classes": {
+        "primary": "btn-outline-primary",
+        "secondary": "btn-secondary",
+        "info": "btn-outline-info",
+        "warning": "btn-warning",
+        "danger": "btn-danger",
+        "success": "btn-success"
+    },
+    "actions_sticky_top": False
+}
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [(BASE_DIR / 'static')]

@@ -18,41 +18,68 @@
 
                 <div class="header-misc">
 
-                    <!-- Top Login
+                    <!-- Top Login/Logout
                     ============================================= -->
-                    <div id="top-account" class="px-4">
-                        <a href="#modal-register" data-lightbox="inline">Sign up/Login</a>
-                    </div><!-- #top-search end -->
+                    {% if user.is_authenticated %}
+                        <div id="top-account" class="px-4">
+                            <a href="{% url 'exit' %}">Logout</a>
+                        </div><!-- #top-search end -->
+                    {% else %}
+                        <div id="top-account" class="px-4">
+                            <a href="#modal-register" data-lightbox="inline">Sign up/Login</a>
+                        </div><!-- #top-search end -->
+                    {% endif %}
+
 
                     <!-- Top Cart
                     ============================================= -->
                     <div id="top-cart">
-                        <a href="#" id="top-cart-trigger" class="position-relative"><i class="icon-line-bag"></i><span
-                                class="top-cart-number">5</span></a>
+                        <a href="#" id="top-cart-trigger" class="position-relative"><i class="icon-line-bag"></i>
+                            <span class="top-cart-number">
+                            {% if cart.products %}
+                                {{ cart.products.count }}
+                            {% else %}
+                                0
+                            {% endif %}
+                            </span>
+                        </a>
                         <div class="top-cart-content">
                             <div class="top-cart-title">
                                 <h4>Shopping Cart</h4>
                             </div>
                             <div class="top-cart-items">
-                                {% for product in cart.get_products %}
+                                {% for product in cart.products %}
                                     <div class="top-cart-item">
-                                    <div class="top-cart-item-image">
-                                        <a href="#"><img src="{{product.product.get_images.first.image.url}}"
-                                                         alt="{{product.product.get_images.first.image.name}}"/></a>
-                                    </div>
-                                    <div class="top-cart-item-desc">
-                                        <div class="top-cart-item-desc-title">
-                                            <a href="#" class="font-weight-normal">{{product.product.get_images.first.image.description}}</a>
-                                            <span class="top-cart-item-price d-block">${{ product.get_total_price }}</span>
+                                        <div class="top-cart-item-image">
+                                            {% if product.product.images.first.image.url %}
+                                                <a href="#"><img src="{{ product.product.images.first.image.url }}"
+                                            {% else %}
+                                                <a href="#"><img src="{% static 'images/no-image-available.jpg' %}"
+                                            {% endif %}
+                                            alt="{{ product.product.images.first.image.name }}"/></a>
+
                                         </div>
-                                        <div class="top-cart-item-quantity font-weight-semibold">x {{ product.amount }}</div>
+                                        <div class="top-cart-item-desc">
+                                            <div class="top-cart-item-desc-title">
+                                                <a href="#"
+                                                   class="font-weight-normal">{{ product.product.images.first.image.description }}</a>
+                                                <span class="top-cart-item-price d-block">${{ product.get_total_price }}</span>
+                                            </div>
+                                            <div class="top-cart-item-quantity font-weight-semibold">
+                                                x {{ product.amount }}</div>
+                                        </div>
                                     </div>
-                                </div>
                                 {% endfor %}
                             </div>
                             <div class="top-cart-action">
                                 <span class="top-checkout-price font-weight-semibold text-dark">${{ cart.get_total_price }}</span>
-                                <a class="button button-dark button-small m-0" href="{% url 'cart' %}">View Cart</a>
+                                {% if user.is_authenticated %}
+                                    <a class="button button-dark button-small m-0" href="{% url 'cart' %}">View Cart</a>
+                                {% else %}
+                                    <a class="button button-dark button-small m-0" data-lightbox="inline" href="#modal-register">View
+                                        Cart</a>
+                                {% endif %}
+
                             </div>
                         </div>
                     </div><!-- #top-cart end -->
@@ -205,7 +232,7 @@
                         <li class="menu-item"><a class="menu-link" href="{% url 'contact' %}">
                             <div>Contact</div>
                         </a></li>
-                        {% if request.user.is_authenticated %}
+                        {% if request.user.is_superuser %}
                             <li class="menu-item"><a class="menu-link" href="{% url 'admin:index' %}">
                                 <div>Admin panel</div>
                             </a></li>

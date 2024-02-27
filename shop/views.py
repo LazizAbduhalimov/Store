@@ -69,7 +69,7 @@ class ProductSinglePage(DetailView, HeaderMixin):
 
         try:
             order = Order.objects.get(user=self.request.user)
-            order.get_products().get(product=self.object)
+            order.products.get(product=self.object)
             is_added_to_cart = True
         except ObjectDoesNotExist:
             is_added_to_cart = False

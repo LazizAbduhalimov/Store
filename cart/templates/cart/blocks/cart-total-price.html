@@ -1,0 +1,34 @@
+<div class="table-responsive" id="total-price-htmx">
+    <table class="table cart cart-totals">
+        <tbody>
+        <tr class="cart_item">
+            <td class="cart-product-name">
+                <strong>Cart Subtotal</strong>
+            </td>
+
+            <td class="cart-product-name">
+                <span class="amount">${{ order.get_total_price }}</span>
+            </td>
+        </tr>
+        <tr class="cart_item">
+            <td class="cart-product-name">
+                <strong>Shipping</strong>
+            </td>
+
+            <td class="cart-product-name">
+                <span class="amount">Free Delivery</span>
+            </td>
+        </tr>
+        <tr class="cart_item">
+            <td class="cart-product-name">
+                <strong>Total</strong>
+            </td>
+
+            <td class="cart-product-name">
+                <span class="amount color lead"><strong>${{ order.get_total_price }}</strong></span>
+            </td>
+        </tr>
+        </tbody>
+
+    </table>
+</div>

@@ -1,4 +1,4 @@
-{% load shop_tags %}
+{% load shop_tags static%}
 <div class="container-fluid topmargin">
     <div class="row">
         <div class="col-md-2 sticky-sidebar-wrap">
@@ -37,20 +37,34 @@
                                 <div class="fslider" data-pagi="false" data-speed="400" data-pause="200000">
                                     <div class="flexslider">
                                         <div class="slider-wrap">
-                                            {% with product.productimage_set.all as images_obj %}
-                                                {% for object in images_obj %}
+                                            {% with product.images as images_obj %}
+                                                {% if images_obj %}
+                                                	{% for object in images_obj %}
                                                     <div class="slide">
                                                         <a href="{{ product.get_absolute_url }}"><img
                                                                 src="{{ object.image.url }}"
                                                                 alt="Black Shoe"></a>
                                                     </div>
                                                 {% endfor %}
+                                                    {% else %}
+                                                    <div class="slide">
+                                                        <a href="{{ product.get_absolute_url }}"><img
+                                                                src="{% static 'images/no-image-available.jpg' %}"
+                                                                alt="Black Shoe"></a>
+                                                {% endif %} 
+                                                
                                             {% endwith %}
                                         </div>
                                     </div>
                                 </div>
-                                <a href="{% url 'add-product' product.pk %}" class="cart-btn button button-white button-light"><i
+                            {% if user.is_authenticated %}
+                            	<a href="{% url 'add-product' product.pk %}" class="cart-btn button button-white button-light"><i
                                         class="icon-line-plus"></i>Add to Cart</a>
+                                {% else %}
+                                <a href="#modal-register" data-lightbox="inline" class="cart-btn button button-white button-light"><i
+                                        class="icon-line-plus"></i>Add to Cart</a>
+                            {% endif %}
+
                             </div>
                             <div class="product-desc">
                                 <div class="product-title">

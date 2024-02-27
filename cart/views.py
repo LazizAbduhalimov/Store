@@ -1,54 +1,40 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
+from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView
 
 from cart.models import Order
+from cart.services import add_product_to_user_cart, substract_product_from_user_cart, remove_product_from_user_cart
 from main_app.mixins import HeaderMixin
-from shop.models import Product
 
 
 class CartPage(LoginRequiredMixin, ListView, HeaderMixin):
     template_name = "cart/cart.html"
     model = Order
-    login_url = reverse_lazy("login")
+    login_url = reverse_lazy("registration")
 
     def get_context_data(self, **kwargs):
         context = super(CartPage, self).get_context_data(**kwargs)
-        context["order"], context["created"] = Order.objects.get_or_create(user=self.request.user)
+        context["order"] = self.model.objects.get_or_create(user=self.request.user)[0]
         return dict(list(context.items()) + list(self.get_user_context().items()))
 
 
-def add_product(request, pk):
-    product = Product.objects.get(pk=pk)
-    order = Order.objects.get_or_create(user=request.user)[0]
-
-    product_order, created = order.get_products().get_or_create(order=order, product=product)
-    if not created:
-        product_order.amount += 1
-
-    product_order.save()
+def add_product_to_user_cart_view(request, pk):
+    add_product_to_user_cart(request.user, pk)
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
-def substract_product(request, pk):
-    product = Product.objects.get(pk=pk)
-
-    order = Order.objects.get_or_create(user=request.user)[0]
-    product_order = order.get_products().get(product=product)
-    product_order.amount -= 1
-    product_order.save()
-    if product_order.amount < 1:
-        product_order.delete()
-
+def substract_product_from_user_cart_view(request, pk):
+    substract_product_from_user_cart(request.user, pk)
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
-def remove_product(request, pk):
-    product = Product.objects.get(pk=pk)
-
-    order = Order.objects.get_or_create(user=request.user)[0]
-    product_order = order.get_products().get(product=product)
-    product_order.delete()
-
+def remove_product_from_user_cart_view(request, pk):
+    remove_product_from_user_cart(request.user, pk)
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+def get_user_cart(request):
+    order = Order.objects.get_or_create(user=request.user)[0]
+    return render(request, "cart/blocks/cart-update-part.html", {"order": order})

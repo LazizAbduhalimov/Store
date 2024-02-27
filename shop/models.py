@@ -41,11 +41,16 @@ class Product(models.Model):
     sex = models.CharField("Sex", default=SexEnum.man.value, max_length=1, choices=sex_choices)
     is_active = models.BooleanField("Is active", default=False)
 
+    @property
+    def images(self):
+        return self.productimage_set.all()
+
+    @property
+    def details(self):
+        return self.productdetail_set.all()
+
     def get_absolute_url(self):
         return reverse('product-single', kwargs={'slug': self.pk})
-
-    def get_images(self):
-        return self.productimage_set.all()
 
     def __str__(self):
         return f"{self.name}-{self.id}"
